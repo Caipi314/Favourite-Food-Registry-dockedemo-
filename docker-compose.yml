@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+   dd-react:
+      image: dd-react
+      build: ./dd-react/
+      stdin_open: true
+      ports:
+         - "3000:3000"
+      networks:
+         - dockerdemo
+
+   dd-express:
+      image: dd-express
+      build: ./dd-express/
+      ports:
+         - "5000:5000"
+      networks:
+         - dockerdemo
+      depends_on:
+         - mongo
+   mongo:
+      image: mongo:4.4
+      ports:
+         - "27017:27017"
+      networks:
+         - dockerdemo
+      volumes:
+         - mongo-data:/data/db
+
+networks:
+   dockerdemo:
+      driver: bridge
+
+volumes:
+   mongo-data:
+      driver: local
